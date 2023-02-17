@@ -1,0 +1,10 @@
+---
+- name: Restart the ssh service
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
+
+- name: Restart timesyncd
+  ansible.builtin.service:
+    name: systemd-timesyncd
+    state: restarted

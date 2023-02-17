@@ -1,0 +1,5 @@
+---
+private_dirs: []
+sshd_addressfamily_inet: false
+sshd_disable_psw_auth: false
+disable_ipv6: false

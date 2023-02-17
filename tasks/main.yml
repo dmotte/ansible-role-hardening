@@ -1,0 +1,55 @@
+---
+- name: Make private directories private
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+  loop: "{{ private_dirs }}"
+
+- name: Set correct hostname in /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: "^127\\.0\\.1\\.1( |\t)"
+    line: "127.0.1.1\t{{ ansible_hostname }}"
+
+- name: In sshd_config, set AddressFamily to inet (IPv4 only)
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?AddressFamily"
+    line: AddressFamily inet
+  when: sshd_addressfamily_inet
+  notify: Restart the ssh service
+
+- name: In sshd_config, disable PasswordAuthentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PasswordAuthentication"
+    line: PasswordAuthentication no
+  when: sshd_disable_psw_auth
+  notify: Restart the ssh service
+
+- name: Force all notified handlers to run at this point
+  ansible.builtin.meta: flush_handlers
+
+- name: Prevent setting NTP server from DHCP
+  block:
+    - name: Delete timesyncd dhclient hook
+      ansible.builtin.file:
+        path: /etc/dhcp/dhclient-exit-hooks.d/timesyncd
+        state: absent
+
+    - name: Delete timesyncd runtime config generated from dhclient hook
+      ansible.builtin.file:
+        path: /run/systemd/timesyncd.conf.d/01-dhclient.conf
+        state: absent
+      notify: Restart timesyncd
+
+    - name: Force all notified handlers to run at this point
+      ansible.builtin.meta: flush_handlers
+
+- name: Disable IPv6
+  ansible.builtin.include_role: { name: dmotte.disable_ipv6 }
+  when: disable_ipv6
+
+- name: Force all notified handlers to run at this point
+  ansible.builtin.meta: flush_handlers
