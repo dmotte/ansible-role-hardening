@@ -1,0 +1,29 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: hardening
+  author: dmotte
+  description: Ansible role to harden Debian systems
+  license: MIT
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - better
+    - configuration
+    - debian
+    - hard
+    - harden
+    - hardening
+    - improve
+    - mode
+    - permissions
+    - root
+    - security
+    - settings
+    - sysctl
+    - system
+    - umask
