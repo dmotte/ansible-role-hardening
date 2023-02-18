@@ -1,4 +1,16 @@
 ---
+- name: Set UMASK to 077 in login.defs
+  ansible.builtin.lineinfile:
+    path: /etc/login.defs
+    regexp: "^#?UMASK"
+    line: UMASK 077
+
+- name: Set DIR_MODE to 0700 in adduser.conf
+  ansible.builtin.lineinfile:
+    path: /etc/adduser.conf
+    regexp: "^#?DIR_MODE="
+    line: DIR_MODE=0700
+
 - name: Make private directories private
   ansible.builtin.file:
     path: "{{ item }}"
