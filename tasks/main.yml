@@ -43,7 +43,7 @@
 - name: Force all notified handlers to run at this point
   ansible.builtin.meta: flush_handlers
 
-- name: Prevent setting NTP server from DHCP
+- name: Prevent setting NTP server from DHCP (with systemd-timesyncd)
   block:
     - name: Delete timesyncd dhclient hook
       ansible.builtin.file:
