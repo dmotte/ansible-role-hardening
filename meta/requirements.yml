@@ -1,4 +1,4 @@
 ---
 roles:
   - name: dmotte.disable_ipv6
-    version: "1.0.1"
+    version: "1.0.2"
