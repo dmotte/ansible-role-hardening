@@ -24,24 +24,37 @@
     regexp: "^127\\.0\\.1\\.1( |\t)"
     line: "127.0.1.1\t{{ ansible_hostname }}"
 
-- name: In sshd_config, set AddressFamily to inet (IPv4 only)
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: "^#?AddressFamily"
-    line: AddressFamily inet
-  when: sshd_addressfamily_inet
-  notify: Restart the ssh service
+- name: OpenSSH server configuration
+  block:
+    - name: Set sshd_config recommended options
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?{{ item.name }}"
+        line: "{{ item.name }} {{ item.value }}"
+      loop:
+        - { name: PermitRootLogin, value: "no" }
+        - { name: HostbasedAuthentication, value: "no" }
+        - { name: PermitEmptyPasswords, value: "no" }
+      notify: Restart the ssh service
 
-- name: In sshd_config, disable PasswordAuthentication
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: "^#?PasswordAuthentication"
-    line: PasswordAuthentication no
-  when: sshd_disable_psw_auth
-  notify: Restart the ssh service
+    - name: In sshd_config, set AddressFamily to inet (i.e. IPv4 only)
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?AddressFamily"
+        line: AddressFamily inet
+      when: sshd_addressfamily_inet
+      notify: Restart the ssh service
 
-- name: Force all notified handlers to run at this point
-  ansible.builtin.meta: flush_handlers
+    - name: In sshd_config, disable PasswordAuthentication
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PasswordAuthentication"
+        line: PasswordAuthentication no
+      when: sshd_disable_psw_auth
+      notify: Restart the ssh service
+
+    - name: Force all notified handlers to run at this point
+      ansible.builtin.meta: flush_handlers
 
 - name: Prevent setting NTP server from DHCP (with systemd-timesyncd)
   block:
