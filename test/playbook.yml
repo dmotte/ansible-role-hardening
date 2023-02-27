@@ -12,3 +12,6 @@
         sshd_addressfamily_inet: true
         sshd_disable_psw_auth: false
         disable_ipv6: true
+        restart_sshd_if_changed: true
+        restart_timesyncd_if_changed: true
+        reload_sysctl_if_changed: true

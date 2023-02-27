@@ -3,14 +3,17 @@
   ansible.builtin.service:
     name: ssh
     state: restarted
+  when: restart_sshd_if_changed
 
 - name: Restart timesyncd
   ansible.builtin.service:
     name: systemd-timesyncd
     state: restarted
+  when: restart_timesyncd_if_changed
 
 - name: Reload the sysctl configuration
   # We have to use the command here because (to date) the
   # ansible.posix.sysctl module does not allow to force a reload
   ansible.builtin.command:
     cmd: sysctl --system
+  when: reload_sysctl_if_changed
