@@ -12,7 +12,7 @@ This role has been tested with **Debian 11** (_bullseye_).
 ## Usage
 
 1. Install this role using the `ansible-galaxy` CLI tool
-2. You can then include it into the `tasks` section of your _Ansible Playbook_. See [`test/playbook.yml`](test/playbook.yml) for an example of how to do that.
+2. You can then include it into the `tasks` section of your _Ansible Playbook_. See [`test/playbook.yml`](test/playbook.yml) for an example of how to do that. Remember to replace the role name with `dmotte.hardening`.
 
 > **Note**: this role must be run as root (`ansible_become: true`).
 
