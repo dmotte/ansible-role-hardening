@@ -5,7 +5,7 @@
 
 Ansible role to **harden Debian** systems.
 
-This role has been tested with **Debian 11** (_bullseye_).
+This role has been tested with **Debian 12** (_bookworm_).
 
 > **Warning**: this is only a partial hardening and it should only serve as inspiration to make your own real hardening based on your specific environment.
 
