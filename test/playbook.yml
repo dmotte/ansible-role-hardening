@@ -8,7 +8,7 @@
       ansible.builtin.include_role: { name: "{{ playbook_dir | dirname }}" }
       vars:
         ansible_become: true
-        private_dirs: ["/home/{{ ansible_user }}"]
+        private_dirs: ["/home/{{ ansible_user_id }}"]
         sshd_addressfamily_inet: true
         sshd_disable_psw_auth: false
         disable_ipv6: true
