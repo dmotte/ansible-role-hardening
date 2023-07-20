@@ -6,12 +6,12 @@
   tasks:
     - name: Include the role from the parent directory
       ansible.builtin.include_role: { name: "{{ playbook_dir | dirname }}" }
-      vars:
+      vars: # noqa: var-naming[no-role-prefix]
         ansible_become: true
-        private_dirs: ["/home/{{ ansible_user_id }}"]
-        sshd_addressfamily_inet: true
-        sshd_disable_psw_auth: false
-        disable_ipv6: true
-        restart_sshd_if_changed: true
-        restart_timesyncd_if_changed: true
-        reload_sysctl_if_changed: true
+        hardening_private_dirs: ["/home/{{ ansible_user_id }}"]
+        hardening_sshd_addressfamily_inet: true
+        hardening_sshd_disable_psw_auth: false
+        hardening_disable_ipv6: true
+        hardening_restart_sshd_if_changed: true
+        hardening_restart_timesyncd_if_changed: true
+        hardening_reload_sysctl_if_changed: true

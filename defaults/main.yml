@@ -1,9 +1,9 @@
 ---
-private_dirs: []
-sshd_addressfamily_inet: false
-sshd_disable_psw_auth: false
-disable_ipv6: false
+hardening_private_dirs: []
+hardening_sshd_addressfamily_inet: false
+hardening_sshd_disable_psw_auth: false
+hardening_disable_ipv6: false
 
-restart_sshd_if_changed: true
-restart_timesyncd_if_changed: true
-reload_sysctl_if_changed: true
+hardening_restart_sshd_if_changed: true
+hardening_restart_timesyncd_if_changed: true
+hardening_reload_sysctl_if_changed: true

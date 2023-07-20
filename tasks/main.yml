@@ -16,7 +16,7 @@
     path: "{{ item }}"
     state: directory
     mode: "0700"
-  loop: "{{ private_dirs }}"
+  loop: "{{ hardening_private_dirs }}"
 
 - name: Set correct hostname in /etc/hosts
   ansible.builtin.lineinfile:
@@ -42,7 +42,7 @@
         path: /etc/ssh/sshd_config
         regexp: "^#?AddressFamily"
         line: AddressFamily inet
-      when: sshd_addressfamily_inet
+      when: hardening_sshd_addressfamily_inet
       notify: Restart the ssh service
 
     - name: In sshd_config, disable PasswordAuthentication
@@ -50,7 +50,7 @@
         path: /etc/ssh/sshd_config
         regexp: "^#?PasswordAuthentication"
         line: PasswordAuthentication no
-      when: sshd_disable_psw_auth
+      when: hardening_sshd_disable_psw_auth
       notify: Restart the ssh service
 
     - name: Force all notified handlers to run at this point
@@ -111,8 +111,8 @@
 - name: Disable IPv6
   ansible.builtin.include_role: { name: dmotte.disable_ipv6 }
   vars:
-    disable_ipv6_reload_sysctl_if_changed: "{{ reload_sysctl_if_changed }}"
-  when: disable_ipv6
+    disable_ipv6_reload_sysctl_if_changed: "{{ hardening_reload_sysctl_if_changed }}"
+  when: hardening_disable_ipv6
 
 - name: Force all notified handlers to run at this point
   ansible.builtin.meta: flush_handlers
